@@ -18,20 +18,23 @@ public class SpawnEnemy : MonoBehaviour
     private IEnumerator Spawn()
     {
         int index = 0;
-        
-        for(int i = 0; i < _countOfEnemies; i++)
+
+        int initialIndex = 0;
+
+        for (int i = initialIndex; i < _countOfEnemies; i++)
         {
             if (index >= _spawnPoints.Count) index = 0;
+
             GameObject enemy = Instantiate(_enemyPref, _spawnPoints[index].transform.position, Quaternion.identity);
-            
+
             foreach (var item in _patrolPoints)
             {
                 enemy.GetComponent<Enemy>().patrolPoints.Add(item);
-            }  
-            
+            }           
+
             yield return new WaitForSeconds(_spawnCooldown);
-            
             index++;
-        }     
+        }
+        
     }
 }
