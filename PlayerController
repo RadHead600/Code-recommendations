@@ -1,23 +1,17 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private float _speed;
-    [SerializeField] private float _speedVolumeChange;
+    [SerializeField] private float _speed;   
     [SerializeField] private float _jumpheight;
     [SerializeField] private Transform _groundCheck;
     [SerializeField] private Transform _spriteTrans;
     [SerializeField] private Text _coinText;
-    [SerializeField] private AudioSource _audioSource;
-    [SerializeField] private GameObject _house;
 
     private int _coins = 0;   
-
-    private const float _maxVolume = 0.2f;
-    private const float _minVolume = 0f;
+    
     private const string coinTag = "Coin";
     private const string playerAnimIsRun = "isRun";
     private const string playerAnimIsJump = "isJump";
@@ -25,13 +19,11 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D _rb;
     private Animator _anim;
-    private Coroutine coroutine;
-
+    
     private void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _anim = GetComponent<Animator>();
-        _audioSource.volume = 0f;       
+        _anim = GetComponent<Animator>();             
     }
 
     private void Update()
@@ -51,8 +43,7 @@ public class PlayerController : MonoBehaviour
         {
             _rb.AddForce(transform.up * _jumpheight, ForceMode2D.Impulse);
             _anim.SetTrigger(playerAnimIsJump);
-        }
-            
+        }      
     }
     private void Flip(float x)
     {
@@ -80,48 +71,6 @@ public class PlayerController : MonoBehaviour
             _coins++;
             _coinText.text = _coins.ToString();
             collision.gameObject.SetActive(false);
-        }
-
-        if (collision.gameObject == _house)
-        {
-            SignalingController(true);
-        }
-            
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject == _house)
-        {
-            SignalingController(false);
-        }
-    }
-
-    private void SignalingController(bool isEnter)
-    {
-        float requiredVolume;
-
-        if (isEnter) requiredVolume = _maxVolume;
-        else requiredVolume = _minVolume;
-
-        if (coroutine != null) StopCoroutine(coroutine);
-        coroutine = StartCoroutine(ChangeVolume(requiredVolume));
-    }
-
-    private IEnumerator ChangeVolume(float requiredVolume)
-    {
-        while (true)
-        {
-            yield return new WaitForEndOfFrame();
-
-            _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, requiredVolume, _speedVolumeChange * Time.deltaTime);
-
-            if (_audioSource.volume == requiredVolume)
-            {
-                coroutine = null;
-                break;
-            }           
-
-        }
-    }
+        }   
+    }    
 }
