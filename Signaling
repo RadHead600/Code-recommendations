@@ -1,0 +1,41 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Signaling : MonoBehaviour
+{
+    [SerializeField] private float _speedVolumeChange;
+
+    [SerializeField] private AudioManager _audioManager;
+
+    private const float _maxVolume = 0.2f;
+    private const float _minVolume = 0f;
+
+    private const string playerTag = "Player";
+
+    private bool _isPlayerInHouse;
+    public bool isPlayerInHouse
+    {
+        get
+        {
+            return _isPlayerInHouse;
+        }
+        set
+        {
+            _isPlayerInHouse = value;
+
+            if(_isPlayerInHouse) _audioManager.SignalingVolumeChange(_maxVolume, _speedVolumeChange);
+            else _audioManager.SignalingVolumeChange(_minVolume, _speedVolumeChange);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == playerTag) isPlayerInHouse = true;
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == playerTag) isPlayerInHouse = false;
+    }
+}
