@@ -19,12 +19,9 @@ public class SpawnEnemy : MonoBehaviour
     {
         int index = 0;
 
-        int initialIndex = 0;
-
-        for (int i = initialIndex; i < _countOfEnemies; i++)
+        for(int i = 0; i < _countOfEnemies; i++)
         {
             if (index >= _spawnPoints.Count) index = 0;
-
             GameObject enemy = Instantiate(_enemyPref, _spawnPoints[index].transform.position, Quaternion.identity);
 
             foreach (var item in _patrolPoints)
@@ -35,6 +32,5 @@ public class SpawnEnemy : MonoBehaviour
             yield return new WaitForSeconds(_spawnCooldown);
             index++;
         }
-        
     }
 }
