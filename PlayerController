@@ -9,9 +9,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform _groundCheck;
     [SerializeField] private Transform _spriteTrans;
     [SerializeField] private Text _coinText;
-
-    private int _coins = 0;   
     
+    private int _coins = 0;   
+ 
     private const string coinTag = "Coin";
     private const string playerAnimIsRun = "isRun";
     private const string playerAnimIsJump = "isJump";
@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D _rb;
     private Animator _anim;
-    
+
     private void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -30,9 +30,7 @@ public class PlayerController : MonoBehaviour
     {
         float x = Input.GetAxis(HORIZONTAL);
 
-        int lowestPossibleValue = 0;
-
-        if (x != lowestPossibleValue) _anim.SetBool(playerAnimIsRun, true);
+        if (x != 0) _anim.SetBool(playerAnimIsRun, true);
         else _anim.SetBool(playerAnimIsRun, false);
 
         Flip(x);
@@ -43,24 +41,21 @@ public class PlayerController : MonoBehaviour
         {
             _rb.AddForce(transform.up * _jumpheight, ForceMode2D.Impulse);
             _anim.SetTrigger(playerAnimIsJump);
-        }      
+        }
+            
     }
+
     private void Flip(float x)
     {
-        int lowestPossibleValue = 0;
-
-        float isPlayerGoRight = x > lowestPossibleValue ? (-1f) : (1f);
+        float isPlayerGoRight = x > 0 ? (-1f) : (1f);
         _spriteTrans.localScale = new Vector3(isPlayerGoRight, 1f, 1f);
     }
+
     private bool CheckGround()  
     {
-        float groundCheckPosition = 0,2f;
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(_groundCheck.position, 0.2f);
 
-        int collidersLength = 1;
-
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(_groundCheck.position, groundCheckPosition);
-
-        if(colliders.Length > collidersLength) return true;
+        if(colliders.Length > 1) return true;
         else return false;    
     }
 
@@ -71,6 +66,7 @@ public class PlayerController : MonoBehaviour
             _coins++;
             _coinText.text = _coins.ToString();
             collision.gameObject.SetActive(false);
-        }   
+        }
+            
     }    
 }
