@@ -11,8 +11,6 @@ public class Signaling : MonoBehaviour
     private const float _maxVolume = 0.2f;
     private const float _minVolume = 0f;
 
-    private const string playerTag = "Player";
-
     private bool _isPlayerInHouse;
     public bool isPlayerInHouse
     {
@@ -24,18 +22,26 @@ public class Signaling : MonoBehaviour
         {
             _isPlayerInHouse = value;
 
-            if(_isPlayerInHouse) _audioManager.SignalingVolumeChange(_maxVolume, _speedVolumeChange);
-            else _audioManager.SignalingVolumeChange(_minVolume, _speedVolumeChange);
+            if (_isPlayerInHouse)
+                _audioManager.SignalingVolumeChange(_maxVolume, _speedVolumeChange);
+            else
+                _audioManager.SignalingVolumeChange(_minVolume, _speedVolumeChange);
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == playerTag) isPlayerInHouse = true;
+        PlayerController playerController = collision.GetComponent<PlayerController>();
+
+        if (playerController != null)
+            isPlayerInHouse = true;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == playerTag) isPlayerInHouse = false;
+        PlayerController playerController = collision.GetComponent<PlayerController>();
+
+        if (playerController != null)
+            isPlayerInHouse = false;
     }
 }
