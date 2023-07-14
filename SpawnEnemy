@@ -27,8 +27,8 @@ public class SpawnEnemy : MonoBehaviour
             foreach (var item in _patrolPoints)
             {
                 enemy.GetComponent<Enemy>().patrolPoints.Add(item);
-            }           
-
+            }    
+            
             yield return new WaitForSeconds(_spawnCooldown);
             index++;
         }
