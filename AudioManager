@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class AudioManager : MonoBehaviour
 {
     private AudioSource _audioSource;
-    private static Coroutine coroutine;
+    private Coroutine coroutine;
 
     private void Start()
     {
@@ -20,17 +21,12 @@ public class AudioManager : MonoBehaviour
     }
     private IEnumerator ChangeVolume(float requiredVolume, float _speedVolumeChange)
     {
-        while (true)
+        while (_audioSource.volume != requiredVolume)
         {
             yield return new WaitForEndOfFrame();
             _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, requiredVolume, _speedVolumeChange * Time.deltaTime);
-
-            if (_audioSource.volume == requiredVolume)
-            {
-                coroutine = null;
-                break;
-            }
-
         }
+
+        coroutine = null;
     }
 }
