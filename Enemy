@@ -41,6 +41,7 @@ public class Enemy : MonoBehaviour
         }
         
     }
+
     private void Flip(bool isGoRight)
     {
         float isPlayerGoRight = isGoRight ? (-1f) : (1f);
