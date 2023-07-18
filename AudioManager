@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AudioManager : MonoBehaviour
+public class AudioControl : MonoBehaviour
 {
     [SerializeField] private AudioSource _signalingAudioSource;
     [SerializeField] private float _maxVolume = 0.2f;
