@@ -2,32 +2,47 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(AudioSource))]
-
 public class AudioManager : MonoBehaviour
 {
-    private AudioSource _audioSource;
-    private Coroutine coroutine;
+    [SerializeField] private AudioSource _signalingAudioSource;
+    [SerializeField] private float _maxVolume = 0.2f;
+    [SerializeField] private float _minVolume = 0f;
+    [SerializeField] private float _speedVolumeChange = 0.1f;
+
+    private float _targetVolume;
+    private Coroutine _volumeChangeCoroutine;
 
     private void Start()
     {
-        _audioSource = GetComponent<AudioSource>();
-        _audioSource.volume = 0f;
+        _targetVolume = _minVolume;
+        _signalingAudioSource.volume = _targetVolume;
     }
 
-    public void SignalingVolumeChange(float requiredVolume, float _speedVolumeChange)
+    public void SignalingVolumeChange(float targetVolume, float speed)
     {
-        if (coroutine != null) StopCoroutine(coroutine);
-        coroutine = StartCoroutine(ChangeVolume(requiredVolume, _speedVolumeChange));
-    }
-    private IEnumerator ChangeVolume(float requiredVolume, float _speedVolumeChange)
-    {
-        while (_audioSource.volume != requiredVolume)
+        _targetVolume = Mathf.Clamp(targetVolume, _minVolume, _maxVolume);
+        _speedVolumeChange = speed;
+
+        if (_volumeChangeCoroutine != null)
         {
-            yield return new WaitForEndOfFrame();
-            _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, requiredVolume, _speedVolumeChange * Time.deltaTime);
+            StopCoroutine(_volumeChangeCoroutine);
         }
 
-        coroutine = null;
+        _volumeChangeCoroutine = StartCoroutine(ChangeVolumeOverTime());
     }
+
+    private IEnumerator ChangeVolumeOverTime()
+    {
+        while (!Mathf.Approximately(_signalingAudioSource.volume, _targetVolume))
+        {
+            _signalingAudioSource.volume = Mathf.MoveTowards(_signalingAudioSource.volume, _targetVolume, _speedVolumeChange * Time.deltaTime);
+            yield return null;
+        }
+
+        _volumeChangeCoroutine = null;
+    }
+
+    public float MaxVolume => _maxVolume;
+    public float MinVolume => _minVolume;
+    public float SpeedVolumeChange => _speedVolumeChange;
 }
