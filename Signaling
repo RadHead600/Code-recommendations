@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class Signaling : MonoBehaviour
 {
-    private AudioManager _audioManager;
+    private AudioControl _audioControl;
     private bool _isPlayerInHouse;
 
     private void Start()
     {
-        _audioManager = FindObjectOfType<AudioManager>();
+        _audioControl = FindObjectOfType<AudioControl>();
 
-        if (_audioManager == null)
+        if (_audioControl == null)
         {
-            Debug.LogError("AudioManager not found in the scene! Make sure it's present.");
+            Debug.LogError("AudioControl not found in the scene! Make sure it's present.");
         }
     }
 
@@ -39,12 +39,12 @@ public class Signaling : MonoBehaviour
 
     private void UpdateSignalingVolume()
     {
-        if (_audioManager != null)
+        if (_audioControl != null)
         {
             if (_isPlayerInHouse)
-                _audioManager.SignalingVolumeChange(_audioManager.MaxVolume, _audioManager.SpeedVolumeChange);
+                _audioControl.SignalingVolumeChange(_audioControl.MaxVolume, _audioControl.SpeedVolumeChange);
             else
-                _audioManager.SignalingVolumeChange(_audioManager.MinVolume, _audioManager.SpeedVolumeChange);
+                _audioControl.SignalingVolumeChange(_audioControl.MinVolume, _audioControl.SpeedVolumeChange);
         }
     }
 }
