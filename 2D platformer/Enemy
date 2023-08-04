@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float _speed;
     [SerializeField] private Transform _spriteTrans;
     [SerializeField] private Transform _groundCheck;
+
     [NonSerialized] public List<GameObject> patrolPoints = new List<GameObject>();
 
     private Rigidbody2D _rb;
