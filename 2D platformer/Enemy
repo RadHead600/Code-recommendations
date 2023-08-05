@@ -43,9 +43,11 @@ public class Enemy : MonoBehaviour
         if (CheckGround())
         {
             if (_isGoRight)
-                _rb.velocity = new Vector2(_speed, _rb.velocity.y);
+                _rb.velocity = new Vector2
+                (_speed, _rb.velocity.y);
             else
-                _rb.velocity = new Vector2(-1 * _speed, _rb.velocity.y);
+                _rb.velocity = new Vector2
+                (-1 * _speed, _rb.velocity.y);
         }
     }
 
