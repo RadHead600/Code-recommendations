@@ -27,7 +27,9 @@ public class Enemy : MonoBehaviour
         Vector3 currentPatrolPoint = patrolPoints[_index].position;
         _isGoRight = currentPatrolPoint.x > transform.position.x;
 
-        if (Mathf.Abs(currentPatrolPoint.x - transform.position.x) < 0.5f)
+        float position = 0.5f; 
+
+        if (Mathf.Abs(currentPatrolPoint.x - transform.position.x) < position)
             _index++;
 
         if (_index >= patrolPoints.Count)
@@ -55,9 +57,13 @@ public class Enemy : MonoBehaviour
 
     private bool CheckGround()
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(_groundCheck.position, 0.2f);
+        float stance = 0.2f;
 
-        if (colliders.Length > 1)
+        int length = 1;
+
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(_groundCheck.position, stance);
+
+        if (colliders.Length > length)
             return true;
         else
             return false;
