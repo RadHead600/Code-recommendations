@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpawnEnemy : MonoBehaviour
+public class EnemyRespawn : MonoBehaviour
 {
     [SerializeField] private List<GameObject> _spawnPoints = new List<GameObject>();
     [SerializeField] private List<GameObject> _patrolPoints = new List<GameObject>();
