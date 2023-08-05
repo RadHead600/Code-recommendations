@@ -19,18 +19,20 @@ public class EnemyRespawn : MonoBehaviour
     {
         int index = 0;
 
-        for(int i = 0; i < _countOfEnemies; i++)
-        {
-            if (index >= _spawnPoints.Count) index = 0;
-            Enemy enemy = Instantiate(_prefab, _spawnPoints[index].transform.position, Quaternion.identity);
+        WaitForSeconds spawnWait = new WaitForSeconds(_spawnCooldown);
 
-            foreach (var item in _patrolPoints)
-            {
-                enemy.patrolPoints.Add(item.transform);
-            }    
-            
-            yield return new WaitForSeconds(_spawnCooldown);
-            index++;
+        for (int i = 0; i < _countOfEnemies; i++)
+        {
+          if (index >= _spawnPoints.Count) index = 0;
+          Enemy enemy = Instantiate(_prefab, _spawnPoints[index].transform.position, Quaternion.identity);
+
+          foreach (var item in _patrolPoints)
+          {
+             enemy.patrolPoints.Add(item.transform);
+          }
+
+          yield return spawnWait;
+          index++;
         }
     }
 }
