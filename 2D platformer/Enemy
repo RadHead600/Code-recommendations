@@ -11,7 +11,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private Transform _spriteTrans;
     [SerializeField] private Transform _groundCheck;
 
-    [NonSerialized] public List<GameObject> patrolPoints = new List<GameObject>();
+    [SerializeField] private List<Transform> patrolPoints = new List<Transform>();
 
     private Rigidbody2D _rb;
     private bool _isGoRight = true;
@@ -24,23 +24,27 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        if (patrolPoints[_index].transform.position.x > transform.position.x) _isGoRight = true;
-        else _isGoRight = false;
+        Vector3 currentPatrolPoint = patrolPoints[_index].position;
+        _isGoRight = currentPatrolPoint.x > transform.position.x;
 
-        if (Mathf.Abs(patrolPoints[_index].transform.position.x - transform.position.x) < 0.5f) _index++;
-        if (_index >= patrolPoints.Count) _index = 0;
+        if (Mathf.Abs(currentPatrolPoint.x - transform.position.x) < 0.5f)
+            _index++;
+
+        if (_index >= patrolPoints.Count)
+            _index = 0;
     }
 
     private void FixedUpdate()
-    {        
+    {
         Flip(_isGoRight);
 
-        if(CheckGround())
+        if (CheckGround())
         {
-            if (_isGoRight) _rb.velocity = new Vector2(_speed, _rb.velocity.y);
-            else _rb.velocity = new Vector2(-1 * _speed, _rb.velocity.y);
+            if (_isGoRight)
+                _rb.velocity = new Vector2(_speed, _rb.velocity.y);
+            else
+                _rb.velocity = new Vector2(-1 * _speed, _rb.velocity.y);
         }
-        
     }
 
     private void Flip(bool isGoRight)
@@ -53,7 +57,9 @@ public class Enemy : MonoBehaviour
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(_groundCheck.position, 0.2f);
 
-        if (colliders.Length > 1) return true;
-        else return false;
+        if (colliders.Length > 1)
+            return true;
+        else
+            return false;
     }
 }
