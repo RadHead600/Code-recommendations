@@ -7,7 +7,7 @@ using static System.Runtime.CompilerServices.RuntimeHelpers;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Animator))]
 
-public class PlayerGovernance : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     private const string playerAnimIsRun = "isRun";
     private const string playerAnimIsJump = "isJump";
@@ -17,9 +17,6 @@ public class PlayerGovernance : MonoBehaviour
     [SerializeField] private float _jumpheight;
     [SerializeField] private Transform _groundCheck;
     [SerializeField] private Transform _spriteTrans;
-    [SerializeField] private Text _coinText;
-
-    private int _coins = 0;
 
     private Rigidbody2D _rb;
     private Animator _anim;
@@ -55,19 +52,11 @@ public class PlayerGovernance : MonoBehaviour
 
     private bool CheckGround()
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(_groundCheck.position, 0.2f);
+        float position = 0.2f;
 
-        if (colliders.Length > 1) return true;
-        else return false;
-    }
+        float length = 1;
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.TryGetComponent<Coin>(out var coin))
-        {
-             _coins++;
-             _coinText.text = _coins.ToString();
-             coin.gameObject.SetActive(false);
-        }
+         Collider2D[] colliders = Physics2D.OverlapCircleAll(_groundCheck.position, position);
+         return colliders.Length > length;
     }
 }
