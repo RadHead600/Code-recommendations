@@ -59,15 +59,10 @@ public class Enemy : MonoBehaviour
 
     private bool CheckGround()
     {
-        float stance = 0.2f;
+       float stance = 0.2f;
+       int length = 1;
 
-        int length = 1;
-
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(_groundCheck.position, stance);
-
-        if (colliders.Length > length)
-            return true;
-        else
-            return false;
+       Collider2D[] colliders = Physics2D.OverlapCircleAll(_groundCheck.position, stance);
+       return colliders.Length > length;
     }
 }
