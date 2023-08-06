@@ -63,9 +63,7 @@ public class PlayerGovernance : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Coin coin = collision.GetComponent<Coin>();
-
-        if (coin != null)
+        if (collision.TryGetComponent(out Coin coin))
         {
             _coins++;
             _coinText.text = _coins.ToString();
