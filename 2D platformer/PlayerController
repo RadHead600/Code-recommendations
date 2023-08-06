@@ -63,11 +63,11 @@ public class PlayerGovernance : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out Coin coin))
+        if (collision.TryGetComponent<Coin>(out var coin))
         {
-            _coins++;
-            _coinText.text = _coins.ToString();
-            coin.gameObject.SetActive(false);
+             _coins++;
+             _coinText.text = _coins.ToString();
+             coin.gameObject.SetActive(false);
         }
     }
 }
